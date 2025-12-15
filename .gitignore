@@ -123,6 +123,9 @@ temp/
 *.zip
 *.7z
 
+# Local model cache
+.model_cache/
+
 # Hugging Face cache (optional - uncomment if you want to exclude)
 # .cache/
 # huggingface/

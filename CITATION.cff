@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this project, please cite it as below."
+title: "RAG Analysis: Evaluating Retrieval-Augmented Generation for Hallucination Reduction"
+authors:
+  - family-names: "Sanghavi"
+    given-names: "Jay"
+    email: "jay.sanghavi@outlook.com"
+    orcid: "https://orcid.org/0000-0000-0000-0000"
+version: "1.0.0"
+date-released: "2025-12-15"
+keywords:
+  - "Retrieval-Augmented Generation"
+  - "HotpotQA"
+  - "LLM"
+  - "Hallucination"
+  - "Evaluation"
+repository-code: "https://github.com/Jay-Sanghavi/RAG-anlysis"
+license: "MIT"
+abstract: |
+  This repository provides a modular, reproducible pipeline to evaluate the impact of retrieval-augmented generation (RAG) on accuracy and hallucination reduction for small open-source LLMs on the HotpotQA dataset. It includes configuration-driven experiments, evaluation metrics (EM, F1, hallucination rate), and notebooks for analysis and visualization.
