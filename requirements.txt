@@ -1,0 +1,40 @@
+# RAG Analysis Project - Requirements
+
+# Core dependencies
+datasets>=2.14.0
+transformers>=4.35.0
+torch>=2.0.0
+sentence-transformers>=2.2.2
+faiss-cpu>=1.7.4  # Use faiss-gpu if CUDA is available
+
+# Data processing
+pandas>=2.0.0
+numpy>=1.24.0
+
+# Evaluation
+scipy>=1.11.0
+statsmodels>=0.14.0
+
+# Configuration
+pyyaml>=6.0
+
+# Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+plotly>=5.17.0
+
+# Jupyter support
+jupyter>=1.0.0
+ipykernel>=6.25.0
+notebook>=7.0.0
+
+# Optional: For 8-bit quantization (reduces memory usage)
+# bitsandbytes>=0.41.0
+# accelerate>=0.24.0
+
+# Optional: For alternative vector stores
+# chromadb>=0.4.0
+
+# Utilities
+tqdm>=4.65.0
+rank-bm25>=0.2.2

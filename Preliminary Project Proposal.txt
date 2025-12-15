@@ -1,0 +1,96 @@
+﻿Preliminary Project Proposal
+Motivation and Problem Statement
+Large Language Models (LLMs) have made major advances in generating high-quality text, but they still produce “hallucinations”[a]—confident outputs that are factually incorrect. This problem limits their reliability in real-world scenarios such as customer support, coding assistance, research help, and internal knowledge search. A practical method to reduce hallucinations is Retrieval-Augmented Generation (RAG), which provides expanse. The expanse of RAG varies across models and tasks, and there is limited lightweight evaluation comparing RAG to non-RAG responses in a controlled, reproducible academic setting.
+This project aims to evaluate whether adding retrieval improves the accuracy and reduces hallucinations in small open-source LLMs. I will build a small, clear benchmark of questions, run the model with and without retrieval, and measure performance differences. The focus is to generate a simple, evidence-based understanding of RAG’s impact on reliability, without building a large-scale system.
+This topic is interesting because hallucinations remain one of the most cited limitations of modern LLMs. Understanding how retrieval affects factual correctness supports better model usage and can guide future evaluation work. The project will help me learn practical evaluation techniques, vector search fundamentals, and basic LLM pipeline design. While not developing a full system, I aim to gain hands-on experience with modern AI components that are widely used in industry.
+Data Selected for Analysis
+Dataset: HotpotQA (subset)
+Source: Hugging Face Datasets
+Link: https://huggingface.co/datasets/hotpotqa/hotpot_qa
+License: MIT License
+
+
+Summary:
+HotpotQA is a crowdsourced question-answering dataset that contains factual multi-hop questions along with reference contexts and ground-truth answers. The dataset was designed to evaluate reasoning and factual answering abilities in QA systems. For this project, I will use a small subset (approximately 50–100 examples) to keep the code manageable and the evaluation transparent.[b]
+
+
+Why this dataset fits the goal:
+* Provides factual questions and verified answers.
+* Enables clear correctness scoring.
+* Public, open-source, and legally allowed for academic use.
+* Widely used in QA benchmarking, so results are grounded in established practice.
+* Allows direct comparison between model-only answering and RAG-assisted answering.
+Ethical considerations
+* The dataset contains informational questions only; no personal or sensitive user data.
+* MIT license permits use for research.
+* No identifiable individuals or private textual.
+* Fair to acknowledge that the dataset creators and annotators did the original labor, and Research questions and hypotheses
+Unknowns and Dependencies
+* Model Access: I plan to use open-source models such as Llama-3 8B or Mistral 7B locally or via Hugging Face inference. Availability and compute limits may influence performance speed. If running locally proves slow, I will use a smaller model or hosted inference.
+* Evaluation Time: Manual hallucination labeling requires review time. I am limiting the dataset size to ensure I can complete the evaluation within two weeks.
+* RAG Setup: I will use Chroma or FAISS for vector search. These libraries are well-documented, but small integration issues could add setup time. To mitigate this, I will scope retrieval to a simple text store and avoid complex routing logic.
+* Compute Constraints: I will use quantized models if needed to ensure fast testing on local hardware.
+
+
+Overall, the project is intentionally scoped small. Even if I face environment or computer challenges, I can still complete the core goal: run a small benchmark comparing model-only answers to RAG-augmented answers and report results clearly.
+Research questions and hypotheses
+RQ1. Does adding retrieval (RAG) reduce hallucinations and increase factual accuracy for small open-source LLMs on multi-hop QA?
+H1. RAG will reduce hallucination rate and increase accuracy by at least 10 percentage points versus no-RAG on a 50–100 item subset.
+RQ2. How does retrieval quality relate to correctness?
+H2. Higher retrieval recall@k[c] correlates positively with factual correctness and negatively with hallucinations.
+RQ3. How sensitive are results to retrieval depth and context size?
+H3. Moderate k (e.g., 3–5 chunks) outperforms very small or very large k due to context dilution at large k.
+Background and related work
+LLMs frequently “hallucinate,” generating confident but non-factual content. Recent surveys document definitions, taxonomies, and mitigation methods, and emphasize that hallucinations persist even in strong models. (Link)
+Retrieval-Augmented Generation (RAG) augments a generator with non-parametric memory, retrieving relevant passages to ground answers; the original RAG work demonstrates gains on knowledge-intensive tasks. (Link)
+Empirical studies in specific domains show mixed but promising reductions in hallucinations with RAG: legal and medical evaluations report improvements, yet substantial hallucination rates remain, implying mitigation rather than elimination. This motivates a careful, small-scale benchmark that is transparent and reproducible. (Link)
+For evaluation, HotpotQA provides multi-hop, Wikipedia-grounded questions with gold answers and supporting facts, making it suitable for small-scale experiments that still test reasoning and factuality. (Link)
+
+
+How does prior work inform this study?
+* Use a grounded QA set (HotpotQA) to enable objective accuracy checks. 
+* Compare no-RAG vs RAG to isolate the retrieval’s effect, as recommended in RAG literature. 
+* Treat hallucination reduction as partial, not absolute, and measure it explicitly. 
+Methodology
+Data and task
+* Dataset: HotpotQA (subset of 50–100 items). Each item has a question, gold answer, and supporting evidence drawn from Wikipedia. MIT-licensed and publicly available. [d]
+* Task: Short-form QA. Model outputs a single answer phrase or sentence.
+Systems compared
+* Models: One small open model (e.g., Llama-3-8B-Instruct or Mistral-7B-Instruct; quantized if needed).
+* Pipelines:
+   * No-RAG baseline: direct generation from the prompt.
+   * RAG: embed Wikipedia passages associated with the HotpotQA items; retrieve top-k chunks with a sentence-transformer encoder; stuff or re-prompt with retrieved context before answering.
+Retrieval setup
+* Indexer: FAISS or Chroma.
+* Encoder: SentenceTransformers (e.g., all-MiniLM-L6-v2) for speed.
+* Granularity: Passage chunks ~200–400 tokens, overlap 20–30%.
+* Hyperparameters: k ∈ {1, 3, 5}. Record recall@k against known supporting facts.
+Inference
+* Fixed temperature and max tokens across conditions.
+* Deterministic seeds were supported.
+* Run each question once per condition to keep the sample size small; if time allows, repeat runs to assess variance.
+Metrics
+* Accuracy: Exact Match (EM) and token-level F1 against gold answers (standard for QA).
+* Hallucination rate: Share of responses that are factually incorrect or unsupported by the provided context (for RAG) or by Wikipedia evidence (for no-RAG). Annotate 50–100 items with a binary label; optionally use an LLM-as-judge rubric and confirm with spot human checks on disagreements (10–20 items).
+* Retrieval quality: recall@k of gold supporting facts; optional MRR@k.
+* Correlations: Spearman between retrieval recall@k and correctness.
+Statistical testing
+Paired comparison of correctness between no-RAG and RAG using McNemar’s test on per-item correctness (same items, two conditions). Report p-value and effect size with 95% CI via bootstrap. 
+Reporting
+* Table of EM/F1 and hallucination% for each condition and k.
+* Plot accuracy vs. k and hallucination% vs. k.
+* Error analysis: 5–10 representative failure cases with short notes on why retrieval helped or hurt.
+Tooling and reproducibility
+* Code: Python, Hugging Face Transformers, SentenceTransformers, FAISS/Chroma, Pandas, Matplotlib/Plotly.
+* Environment: requirements.txt; fixed model versions; random seeds; small, committed subset list.
+* Artifacts: CSV of per-item results, human labels, and retrieval stats; one-page methods card.
+Risks and mitigations
+* Compute limits: If 7B models are slow, switch to quantized GGUF or a smaller instruction model.
+* Labeling time: Cap at 50–100 items; prioritize a clear rubric.
+* Domain leakage: Use only HotpotQA evidence tied to each question to prevent unfair advantages.
+
+
+[a]You can define what you mean exactly by hallucinations, so that in methodology you will have specific rubric what counts as hallucinations and what does not
+[b]You might want to clarify how you will handle ambiguous or multi-format answers in HotpotQA, if there are any to keep them consistent
+[c]@k refers to evaluating the metric using the top k retrieved items.
+[d]You can expand more on how you going to select those 50-100 items from datasets. Is that just a random subset?

@@ -1,0 +1,128 @@
+# OS / Editor
+.DS_Store
+.vscode/
+.idea/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+.env
+
+# Notebooks
+.ipynb_checkpoints/
+.notebooks_cache/
+
+# Data caches and outputs
+logs/
+checkpoints/
+experiments/
+results/
+presentation_plots/
+
+# Local config overrides
+config/local*.yaml
+
+# Temporary files
+*.tmp
+*.log
+
+# Coverage / testing
+htmlcov/
+.coverage*
+.pytest_cache/
+
+# Build
+build/
+dist/
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+
+# Data files
+*.csv
+*.json
+*.jsonl
+*.parquet
+data/hotpotqa_subset.json
+data/corpus.json
+data/*.bin
+data/*.index
+
+# Model files
+*.bin
+*.safetensors
+*.pt
+*.pth
+checkpoints/
+models/
+
+# Results and logs
+results/
+logs/
+*.log
+
+# FAISS indices
+*.faiss
+*.index
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment variables
+.env
+.env.local
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Large files
+*.tar.gz
+*.zip
+*.7z
+
+# Hugging Face cache (optional - uncomment if you want to exclude)
+# .cache/
+# huggingface/
